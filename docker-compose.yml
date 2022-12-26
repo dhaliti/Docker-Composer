@@ -1,0 +1,58 @@
+version: "3"
+services:
+
+  front-end:
+    container_name: {FRONT_END}
+    depends_on:
+    - backend
+    ports:
+    - "8080:8080"
+    build: ./{PATH_TO_FRONT_END}
+    restart: always
+    networks:
+    - network
+
+  database:
+    container_name: {DATABASE}
+    image: {DATABASE_IMAGE}
+    ports:
+    - "5432:5432"
+    volumes:
+    - {PATH_TO_VOLUME}
+    env_file:
+    - .env
+    restart: always
+    networks:
+    - network
+  
+  pgadmin:
+    links:
+    - database:database
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    ports:
+    - "5050:80"
+    volumes:
+    - {PATH_TO_DATABASE_VOLUME}
+    env_file:
+    - .env
+    restart: always
+    networks:
+    - nerwork
+  
+  backend:
+    container_name: {BACKEND}
+    depends_on: 
+      - database
+    ports:
+    - "3000:3000"
+    env_file:
+      - .env
+    build: ./{PATH_TO_BACKEND}
+    restart: always
+    networks:
+    - network
+
+networks:
+  network:
+    driver: bridge
