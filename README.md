@@ -4,6 +4,6 @@
 
 A simple docker-compose template file to run a front-end service, a back-end service and a database.
 
-## Usage
+## Get started
 Configure the file according to the services you wish to deploy. Then simply run:<br><br>
 ```docker-compose up --build```
